@@ -7,7 +7,7 @@
 </head>
 
 <body>
-
+    <div id="score">0</div>
     <canvas id="gameCanvas" width="300" height="300"></canvas>
     <script>
         const CANVAS_BORDER_COLOUR = 'black';
@@ -36,6 +36,7 @@
                 y: 150
             },
         ];
+        let score = 0;
 
         // Food x coordinate
         let foodX;
@@ -111,6 +112,8 @@
 
             const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
             if (didEatFood) {
+                score += 10;
+                document.getElementById('score').innerHTML = score;
                 createFood();
             } else {
                 snake.pop();
