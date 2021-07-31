@@ -1,62 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Snake Game</title>
 </head>
+
 <body>
 
-<canvas id="gameCanvas" width="300" height="300"></canvas>
-<script>
-    const CANVAS_BORDER_COLOUR = 'black';
-    const CANVAS_BACKGROUND_COLOUR = 'white';
-    const SNAKE_COLOUR = 'lightGreen';
-    const SNAKE_BORDER_COLOUR = 'darkGreen';
+    <canvas id="gameCanvas" width="300" height="300"></canvas>
+    <script>
+        const CANVAS_BORDER_COLOUR = 'black';
+        const CANVAS_BACKGROUND_COLOUR = 'white';
+        const SNAKE_COLOUR = 'lightGreen';
+        const SNAKE_BORDER_COLOUR = 'darkGreen';
 
-    let snake = [
-        {x: 150, y: 150},
-        {x: 140, y: 150},
-        {x: 130, y: 150},
-        {x: 120, y: 150},
-        {x: 110, y: 150},
-    ];
+        let snake = [{
+                x: 150,
+                y: 150
+            },
+            {
+                x: 140,
+                y: 150
+            },
+            {
+                x: 130,
+                y: 150
+            },
+            {
+                x: 120,
+                y: 150
+            },
+            {
+                x: 110,
+                y: 150
+            },
+        ];
 
-    // Get the canvas element
-    gameCanvas = document.getElementById('gameCanvas');
+        // Horizontal velocity
+        let dx = 0;
+        // Vertical velocity
+        let dy = -10;
 
-    // return 2 dimensional drawing context
-    const ctx = gameCanvas.getContext("2d");
+        // Get the canvas element
+        const gameCanvas = document.getElementById('gameCanvas');
 
-    // Select the colour to fill the canvas
-    ctx.fillStyle = CANVAS_BACKGROUND_COLOUR;
-    // Select the colour of the border of the canvas
-    ctx.strokeStyle = CANVAS_BORDER_COLOUR;
+        // return 2 dimensional drawing context
+        const ctx = gameCanvas.getContext("2d");
 
-    // Draw a filled rectangle to cover the entire canvas
-    ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-    // Draw a border around the entire canvas
-    ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height)
+        function clearCanvas() {
+            // Select the colour to fill the canvas
+            ctx.fillStyle = CANVAS_BACKGROUND_COLOUR;
+            // Select the colour of the border of the canvas
+            ctx.strokeStyle = CANVAS_BORDER_COLOUR;
 
-    drawSnake();
+            // Draw a filled rectangle to cover the entire canvas
+            ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+            // Draw a border around the entire canvas
+            ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height)
 
-    // Draw snake on the canvas
-    function drawSnake() {
-        // loop through the snake drawing each part on the canvas
-        snake.forEach(drawSnakePart)
-    }
+        }
 
-    /**
-     *  Draws a part of snake on the canvas
-     * @param snakePart - The coordinates where the part should be drawn
-     */
+        advanceSnake();
+        // Change vertical velocity to 0
+        dx = 0;
+        // Change horizontal velocity to 10
+        dy = -10;
+        clearCanvas();
 
-    function drawSnakePart(snakePart) {
-        ctx.fillStyle = SNAKE_COLOUR
-        ctx.strokeStyle = SNAKE_BORDER_COLOUR
 
-        ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
-        ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
-    }
-</script>
+        function main() {
+
+            setTimeout(function onTick() {
+                clearCanvas();
+                advanceSnake();
+                drawSnake();
+
+                // call main again
+                main();
+            }, 100);
+        }
+
+        main();
+        // draw snake on canvas
+        drawSnake();
+
+        // Draw snake on the canvas
+        function drawSnake() {
+            // loop through the snake drawing each part on the canvas
+            snake.forEach(drawSnakePart)
+        }
+
+        // update the snake
+        function advanceSnake() {
+            const head = {
+                x: snake[0].x + dx,
+                y: snake[0].y + dy
+            };
+
+            snake.unshift(head);
+            snake.pop();
+        }
+
+
+        /**
+         *  Draws a part of snake on the canvas
+         * @param snakePart - The coordinates where the part should be drawn
+         */
+
+        function drawSnakePart(snakePart) {
+            ctx.fillStyle = SNAKE_COLOUR
+            ctx.strokeStyle = SNAKE_BORDER_COLOUR
+
+            ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
+            ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+        }
+    </script>
 </body>
+
 </html>
