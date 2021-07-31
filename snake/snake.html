@@ -54,6 +54,36 @@
         // return 2 dimensional drawing context
         const ctx = gameCanvas.getContext("2d");
 
+        //start game
+        main();
+
+        // create first food
+        createFood();
+
+
+        // call changeDirection whenever a key is passed 
+        document.addEventListener("keydown", changeDirection)
+
+        function main() {
+
+            if (didGameEnd()) return;
+            setTimeout(function onTick() {
+                
+                clearCanvas();
+                drawFood();
+                drawSnake();
+                advanceSnake();
+
+
+                // call main again
+                main();
+            }, 100);
+        }
+
+
+
+
+
         function clearCanvas() {
             // Select the colour to fill the canvas
             ctx.fillStyle = CANVAS_BACKGROUND_COLOUR;
@@ -67,33 +97,6 @@
 
         }
 
-        advanceSnake();
-        // Change vertical velocity to 0
-        dx = 0;
-        // Change horizontal velocity to 10
-        dy = -10;
-        clearCanvas();
-
-        createFood();
-
-        function main() {
-
-            if (didGameEnd()) return;
-            setTimeout(function onTick() {
-                clearCanvas();
-                drawFood();
-                advanceSnake();
-                drawSnake();
-
-                // call main again
-                main();
-            }, 100);
-        }
-
-        main();
-        // draw snake on canvas
-        drawSnake();
-        document.addEventListener("keydown", changeDirection)
 
         // Draw snake on the canvas
         function drawSnake() {
